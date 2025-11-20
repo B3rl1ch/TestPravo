@@ -17,8 +17,6 @@ public static class DatabaseExtensions
             $"Username={dbConfig["Username"]};" +
             $"Password={dbConfig["Password"]}";
         
-        Console.WriteLine($"DB connection: {connectionString}");
-        
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
         
         return services;
