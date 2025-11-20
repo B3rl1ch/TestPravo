@@ -1,0 +1,32 @@
+﻿name: task-pravo
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: task-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: test-task-pravo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task-api
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=test-task-pravo;Username=postgres;Password=postgres"
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
