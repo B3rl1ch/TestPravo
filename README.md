@@ -9,5 +9,5 @@
 Для старта приложения необходимо:
 1. Выполнить команду docker compose build --no-cach
 2. Выполнить команду docker-compose -f compose.yml up
-3. После успешного запуска, перейти по http://localhost:8080/swagger/index.html
+3. После успешного запуска, перейти по http://localhost:8080
 4. Пользоваться системой)
