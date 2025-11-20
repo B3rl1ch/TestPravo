@@ -39,6 +39,16 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            app.Use(async (context, next) =>
+    {
+        if (context.Request.Path == "/")
+        {
+            context.Response.Redirect("/swagger/index.html", permanent: false);
+            return;
+        }
+        await next();
+    });
         }
 
         app.UseHttpsRedirection();
