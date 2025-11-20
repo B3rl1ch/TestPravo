@@ -7,6 +7,6 @@
 Подключение к базе устанавливается через переменные как в compose файле, так и в appSettings в приложении
 
 Для старта приложения необходимо:
-1. Выполнить команду docker compose build --no-cach
+1. Выполнить команду docker compose build --no-cache
 2. Выполнить команду docker-compose -f compose.yml up
 3. После успешного запуска, перейти по http://localhost:8080
