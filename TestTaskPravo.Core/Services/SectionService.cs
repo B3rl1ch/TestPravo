@@ -81,19 +81,31 @@ public class SectionService : ISectionService
             .Select(g => g.Key)
             .ToHashSet(StringComparer.Ordinal);
 
-        foreach (var sec in existingSections.ToList())
+        await DeleteSection(existingSections, groupKeys, ct);
+
+        var existingKeys = existingSections
+            .ToDictionary(BuildTagKeyForSection, s => s, StringComparer.Ordinal);
+
+        await AddSection(groups, existingKeys, ct);
+    }
+
+    private async Task DeleteSection(List<Section> sections, HashSet<string> groupKeys, CancellationToken ct)
+    {
+        foreach (var sec in sections.ToList())
         {
             var secKey = BuildTagKeyForSection(sec);
             if (!groupKeys.Contains(secKey))
             {
                 await _sectionProvider.DeleteAsync(sec, ct);
-                existingSections.Remove(sec);
+                sections.Remove(sec);
             }
         }
+    }
 
-        var existingKeys = existingSections
-            .ToDictionary(BuildTagKeyForSection, s => s, StringComparer.Ordinal);
-
+    private async Task AddSection(List<IGrouping<string,Article>> groups,  
+        Dictionary<string,Section> existingKeys, 
+        CancellationToken ct)
+    {
         foreach (var g in groups)
         {
             var key = g.Key;
